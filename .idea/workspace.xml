@@ -38,8 +38,8 @@
       <file leaf-file-name="core.clj" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/first_lab/core.clj">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.047851562" vertical-offset="341" max-vertical-offset="1365">
-              <caret line="26" column="17" selection-start-line="26" selection-start-column="17" selection-end-line="26" selection-end-column="17" />
+            <state vertical-scroll-proportion="2.3291016" vertical-offset="0" max-vertical-offset="2745">
+              <caret line="159" column="49" selection-start-line="159" selection-start-column="49" selection-end-line="159" selection-end-column="49" />
               <folding />
             </state>
           </provider>
@@ -512,6 +512,9 @@
     </list>
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="91ae5d39-d618-4232-829f-a3157bf9cd85" name="Default" comment="" />
@@ -519,12 +522,12 @@
       <option name="number" value="Default" />
       <updated>1418043525966</updated>
       <workItem from="1418043528149" duration="891000" />
-      <workItem from="1418044636089" duration="14278000" />
+      <workItem from="1418044636089" duration="16377000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="15169000" />
+    <option name="totallyTimeSpent" value="17268000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1920" height="1121" extended-state="0" />
@@ -652,8 +655,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/first_lab/core.clj">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.047851562" vertical-offset="341" max-vertical-offset="1365">
-          <caret line="26" column="17" selection-start-line="26" selection-start-column="17" selection-end-line="26" selection-end-column="17" />
+        <state vertical-scroll-proportion="2.3291016" vertical-offset="0" max-vertical-offset="2745">
+          <caret line="159" column="49" selection-start-line="159" selection-start-column="49" selection-end-line="159" selection-end-column="49" />
           <folding />
         </state>
       </provider>
