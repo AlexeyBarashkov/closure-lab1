@@ -86,8 +86,7 @@
                revised-points
                first-center
                (conj centers next-center))
-        (if (< next-potential (* first-potential e_min))
-          centers
+        (if-not (< next-potential (* first-potential e_min))
           (let [shortest-distance (find-shortest-distance get-distance next-center centers)]
             (if (<= 1 (+ (/ shortest-distance r-a) (/ next-potential first-potential)))
               (recur get-distance
@@ -98,7 +97,8 @@
                 (recur get-distance
                        (conj revised-points (assoc next-center :potential 0))
                        first-center
-                       (conj centers (find-max-potential-point revised-points)))))))))))
+                       (conj centers (find-max-potential-point revised-points))))))
+          centers)))))
 
 
 (defn- get-euclidean-distance
