@@ -1,11 +1,11 @@
-(ns barashkov.first-lab.core
+(ns first-lab.core
   (:require [clojure.java.io :as io]
             [clojure.string :as str]))
 
 (defn- sqr [x]
   (* x x))
 
-; define algorithm constants
+
 (def ^:private r-a 3.0)
 (def ^:private alpha (/ 4 (sqr r-a)))
 (def ^:private r-b (* 1.5 r-a))
@@ -19,87 +19,89 @@
   (Math/exp (- (* param distance))))
 
 
-; rewrite
 (defn- get-potential
   [get-distance points point]
   (->> (reduce
          (fn [memo p]
-           (+ memo (->> (get-distance (:value point)
-                                      (:value p))
-                        (exponent alpha))))
+           (+ memo
+              (->>
+                (get-distance (:value point) (:value p))
+                (exponent alpha))))
          0 points)
        (assoc point :potential)))
 
-;rewrite
+
 (defn- get-potentials
-  [distance-func points]
-  (map (partial get-potential distance-func points) points))
+  [get-distance points]
+  (map (partial get-potential get-distance points) points))
 
 
-;rewrite
-(defn- revise-point-potential
-  [distance-func center point]
-  (->> (distance-func (:value point) (:value center))
+(defn- calculate-point-potential
+  [get-distance center point]
+  (->> (get-distance (:value point) (:value center))
        (exponent betta)
        (* (:potential center))
        (- (:potential point))
        (assoc point :potential)))
 
-;rewrite
-(defn- revise-points-potentials
-  [distance-func center points]
-  (->> (map (partial revise-point-potential distance-func center) points)
+
+(defn- calculate-points-potentials
+  [get-distance center points]
+  (->> (map (partial calculate-point-potential get-distance center) points)
        (sort-by :potential >)))
+
 
 (defn- find-max-potential-point
   [points]
-  (->> (sort-by :potential > points)
-       (first)))
+  (->> (sort-by :potential points)
+       (last)))
+
 
 (defn- find-shortest-distance
-  [distance-func center centers]
+  [get-distance center centers]
   (reduce
-    (fn [memo another-center]
-      (min memo (distance-func (:value center)
-                               (:value another-center))))
+    (fn [memo c]
+      (min memo
+           (get-distance (:value center)
+                               (:value c))))
     Double/POSITIVE_INFINITY centers))
 
-; entry point of Cluster Estimation algorithm
+
 (defn- clusterize
-  ([distance-func points]                                   ; init recursion call
-    (let [potentials (->> (get-potentials distance-func points)
+  ([get-distance points]
+    (let [potentials (->> (get-potentials get-distance points)
                           (sort-by :potential >))
           first-center (first potentials)]
-      (clusterize distance-func
+      (clusterize get-distance
                   potentials
                   first-center
                   [first-center])))
-  ([distance-func points first-center centers]
-    (let [revised-points (revise-points-potentials distance-func ((comp first reverse) centers) points)
+  ([get-distance points first-center centers]
+    (let [revised-points (calculate-points-potentials get-distance ((comp first reverse) centers) points)
           next-center (first revised-points)
           first-potential (:potential first-center)
           next-potential (:potential next-center)]
       (if (> next-potential (* first-potential e_max))
-        (recur distance-func
+        (recur get-distance
                revised-points
                first-center
                (conj centers next-center))
         (if (< next-potential (* first-potential e_min))
           centers
-          (let [shortest-distance (find-shortest-distance distance-func next-center centers)]
+          (let [shortest-distance (find-shortest-distance get-distance next-center centers)]
             (if (<= 1 (+ (/ shortest-distance r-a) (/ next-potential first-potential)))
-              (recur distance-func
+              (recur get-distance
                      revised-points
                      first-center
                      (conj centers next-center))
               (let [revised-points (rest revised-points)]
-                (recur distance-func
+                (recur get-distance
                        (conj revised-points (assoc next-center :potential 0))
                        first-center
                        (conj centers (find-max-potential-point revised-points)))))))))))
 
 
-(defn- euclidean-distance
+(defn- get-euclidean-distance
   [p1 p2]
   (let [i (atom -1)]
     (->>
@@ -110,7 +112,8 @@
               0 p1)
       (Math/sqrt))))
 
-(defn- hamming-distance
+
+(defn- get-hamming-distance
   [p1 p2]
   (let [i (atom -1)]
     (reduce (fn [memo val]
@@ -121,11 +124,13 @@
                   memo)))
             0 p1)))
 
+
 (defn- get-distance-function
   [distance-calculation-type]
   (case distance-calculation-type
-    "euclidean" euclidean-distance
-    "hamming" hamming-distance))
+    "euclidean" get-euclidean-distance
+    "hamming" get-hamming-distance))
+
 
 (defn- parse-string
   [str]
@@ -135,7 +140,7 @@
                  (conj memo (Double/parseDouble val)))
                [])))
 
-; read file to list of hash-maps
+
 (defn- get-points
   [filename]
   (let [i (atom -1)]
@@ -150,7 +155,7 @@
                      memo))
                  []))))
 
-; check if arguments are available
+
 (defn- check-arguments
   [distance-calculation-type file-path]
   (reduce
@@ -161,6 +166,7 @@
      (not (str/blank? file-path))
      (contains? distance-calculation-types distance-calculation-type)
      (.exists (io/file file-path))]))
+
 
 (defn -main
   [distance-calculation-type file-path]
@@ -175,4 +181,4 @@
         (->> centers
              (map #(printf "line: %3d, potential: %.4f, data: %s \n" (:index %) (:potential %) (:value %)))
              (dorun))))
-  (println "Wrong arguments")))
+    (println "Wrong arguments")))
