@@ -1,14 +1,19 @@
 # first-lab
 
-A Clojure library designed to ... well, that part is up to you.
+A Clojure library designed to realize cluster estimation algorithm
 
 ## Usage
 
-FIXME
+$> lein run <distance-calculation-type> <file-path>
 
-## License
+Distance calculation types:
+* euclidean
+* hamming
 
-Copyright © 2014 FIXME
+example
 
-Distributed under the Eclipse Public License either version 1.0 or (at
-your option) any later version.
+$> lein run "hamming" "files/irises.txt"
+
+## Tests
+
+$> lein test
