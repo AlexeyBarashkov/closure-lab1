@@ -1,10 +1,10 @@
-# first-lab
+## first-lab
 
 A Clojure library designed to realize cluster estimation algorithm
 
-## Usage
+### Usage
 
-$> lein run <distance-calculation-type> <file-path>
+$> lein run \<distance-calculation-type\> \<file-path\>
 
 Distance calculation types:
 * euclidean
@@ -14,6 +14,6 @@ example
 
 $> lein run "hamming" "files/irises.txt"
 
-## Tests
+### Tests
 
 $> lein test
